@@ -1,0 +1,40 @@
+version: '2'
+
+services:
+  app:
+    build: .
+    container_name: python-app
+    command: python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "5000:8000"
+    links:
+      - postgres:postgreshost
+    depends_on:
+      - postgres
+  postgres:
+   image: postgres:9.6.6-alpine
+   container_name: postgres
+   environment:
+     POSTGRES_DB: andy_app
+     PGDATA: /var/lib/postgresql/data/pgdata
+   ports:
+     - 5432:5432
+   logging:
+     driver: none
+   volumes:
+     - /sa_postgre/:/var/www/html
+  adminer:
+   image: asergey/adminer:latest
+   container_name: app-adminer
+   environment:
+     DB_HOST: postgreshost
+     DB_USER: postgres
+     DB_PASS: postgres
+   ports:
+     - 3308:80
+   links:
+     - postgres:postgreshost
+   logging:
+     driver: none

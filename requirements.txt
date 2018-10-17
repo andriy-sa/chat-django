@@ -1,0 +1,4 @@
+Django==2.1.2
+djangorestframework==3.8.2
+psycopg2==2.7.5
+PyJWT==1.6.4
